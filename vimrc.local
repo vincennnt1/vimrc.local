@@ -1,0 +1,103 @@
+set number
+syntax on
+set autoindent
+set expandtab
+set softtabstop=4
+set nobackup
+set nowrap
+set showcmd
+set wildmenu
+set wildmode=list:longest
+filetype indent on
+
+
+if empty(glob('~/.vim/autoload/plug.vim'))
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+set clipboard=unnamedplus
+
+
+call plug#begin('~/.vim/plugged')
+
+Plug 'jiangmiao/auto-pairs'
+Plug 'preservim/nerdtree'
+Plug 'sheerun/vim-polyglot'
+Plug 'frazrepo/vim-rainbow'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'maxboisvert/vim-simple-complete'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'morhetz/gruvbox'
+Plug 'jeffkreeftmeijer/vim-numbertoggle'
+Plug 'mattn/emmet-vim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'neoclide/coc-css'
+Plug 'simeji/winresizer'
+
+call plug#end()
+
+
+set t_Co=256
+set laststatus=2
+
+
+:set number relativenumber
+
+colorscheme gruvbox 
+
+if !has('gui_running')
+  set t_Co=256
+endif
+
+
+let g:airline#extensions#tabline#enabled = 1
+
+
+let g:airline_left_sep='▶'
+let g:airline_right_sep='◀'
+let g:airline_powerline_fonts = 1
+let g:airline_theme='murmur'
+
+
+set complete-=t
+set complete-=i
+
+let g:rainbow_active = 1
+
+
+set colorcolumn=80
+let g:gruvbox_contrast_dark = 'hard'
+set bg=dark
+
+highlight CursorLine cterm=NONE ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
+set cursorline
+
+
+
+" <Tab>: completion
+inoremap <silent><expr> <Tab>
+    \ pumvisible() ? "\<C-N>" :
+    \ s:check_back_space() ? "\<Tab>" :
+    \ coc#refresh()
+" <S-Tab>: completion back
+inoremap <silent><expr> <S-Tab> pumvisible() ? "\<C-P>" : "\<C-H>"
+" <CR>: confirm completion, or insert <CR>
+inoremap <expr> <CR> pumvisible() ? "\<C-Y>" : "\<CR>"
+
+function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1] =~ '\s'
+endfunction
+
+let g:winresizer_start_key = '<C-T>'
+
