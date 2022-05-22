@@ -1,0 +1,2 @@
+# vimrc.local
+mny vimrc
